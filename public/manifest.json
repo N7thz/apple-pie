@@ -1,8 +1,8 @@
 {
     "name":  "teste dos guri n tem jeito",
     "short_name": "PWA",
-    "theme_color": "#21384f3",
-    "background_color": "#21384f3",
+    "theme_color": "#000",
+    "background_color": "#000",
     "display": "standalone",
     "orientation": "portrait",
     "scope": "/",
