@@ -17,6 +17,7 @@ model Item {
   id         String   @id @default(uuid())
   content    String   @unique
   created_at DateTime @default(now())
+  isChecked  Boolean  @default(false)
 
   @@map("items")
 }

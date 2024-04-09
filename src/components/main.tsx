@@ -1,6 +1,7 @@
 import { Item } from "@prisma/client"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { ButtonAddItem } from "./button-add-item"
+import { ItemsList } from "./items-list"
 
 export const Main = () => {
 
@@ -9,21 +10,13 @@ export const Main = () => {
     return (
 
         <main className="mt-32 flex items-center justify-center">
-            <Card className="w-10/12">
+            <Card className="w-10/12 border-primary">
                 <CardHeader>
                     <CardTitle>
                         Lista de compras
                     </CardTitle>
                     <CardContent className="flex justify-center">
-                        {
-                            items.length === 0
-                                ? <p className="text-muted-foreground">
-                                    sem items para comprar
-                                </p>
-                                : <div>
-
-                                </div>
-                        }
+                        <ItemsList />
                     </CardContent>
                     <CardFooter className="flex justify-end items-center">
                         <ButtonAddItem />

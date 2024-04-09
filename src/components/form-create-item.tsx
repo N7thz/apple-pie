@@ -7,26 +7,21 @@ import {
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { ScrollArea } from "./ui/scroll-area"
-import { z } from "zod"
 import { useForm, useFieldArray } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { v4 as randomUUID } from "uuid"
 import { Plus, X } from "lucide-react"
-
-const createItemsSchema = z.object({
-    items: z.array(z.object({
-        title: z.string().nonempty({
-            message: "todos os campos devem estar preenchidos"
-        })
-    }))
-})
-
-export type CreateItemsForm = z.infer<typeof createItemsSchema>
+import { CreateItemsForm } from "@/@types"
+import { createItemsSchema } from "@/schemas"
+import { useNotification } from "@/context/notification-context"
 
 export const FormCreateItems = () => {
 
+    const { setIsCreated, setsError } = useNotification()
+
     const {
         register,
+        reset,
         handleSubmit,
         control,
         formState: { errors }
@@ -49,14 +44,29 @@ export const FormCreateItems = () => {
             items.push(item.title)
         })
 
-        const { status } = await fetch("/api/create-items", {
+        const reponse = await fetch("/api/items", {
             method: "POST",
             body: JSON.stringify(items)
         })
 
-        if (status === 201) {
+        console.log(reponse)
 
-            
+        if (reponse.status === 201) {
+
+            setIsCreated(true)
+
+            setTimeout(() => {
+                setIsCreated(false)
+                window.location.reload()
+            }, 2000)
+        } else {
+
+            setsError(true)
+
+            setTimeout(() => {
+                setsError(false)
+                reset()
+            }, 2000)
         }
     }
 
