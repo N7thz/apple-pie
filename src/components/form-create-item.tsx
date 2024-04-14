@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "./ui/button"
 import {
     DialogDescription, DialogFooter, DialogHeader, DialogTitle,
@@ -11,13 +12,13 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { v4 as randomUUID } from "uuid"
 import { Plus, X } from "lucide-react"
-import { CreateItemsForm } from "@/@types"
+import { CreateItemsForm, Error } from "@/@types"
 import { createItemsSchema } from "@/schemas"
-import { useNotification } from "@/context/notification-context"
+import { twMerge } from "tailwind-merge"
 
 export const FormCreateItems = () => {
 
-    const { setIsCreated, setsError } = useNotification()
+    const [error, setError] = useState<Error | null>(null)
 
     const {
         register,
@@ -53,20 +54,14 @@ export const FormCreateItems = () => {
 
         if (reponse.status === 201) {
 
-            setIsCreated(true)
-
-            setTimeout(() => {
-                setIsCreated(false)
-                window.location.reload()
-            }, 2000)
+            window.location.reload()
         } else {
 
-            setsError(true)
-
-            setTimeout(() => {
-                setsError(false)
-                reset()
-            }, 2000)
+            reset()
+            setError({
+                isError: true,
+                message: "O item já existe na lista."
+            })
         }
     }
 
@@ -108,7 +103,14 @@ export const FormCreateItems = () => {
                                 <div className="flex gap-2">
                                     <Input
                                         id={title}
-                                        placeholder="Nome do item a ser adiocionado"
+                                        placeholder={
+                                            error
+                                                ? error.message
+                                                : "Nome do item a ser adiocionado"
+                                        }
+                                        className={
+                                            twMerge(error && "border-red-500 placeholder:text-red-500")
+                                        }
                                         {...register(
                                             `items.${index}.title`
                                         )}

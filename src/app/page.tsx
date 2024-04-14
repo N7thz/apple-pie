@@ -1,3 +1,4 @@
+import { AlertModal } from "@/components/alert-modal"
 import { Header } from "@/components/header"
 import { Main } from "@/components/main"
 import { NotificationsBox } from "@/components/notificatoin-box"
@@ -9,7 +10,6 @@ export default function Home() {
     <div className="min-h-screen relative">
       <Header />
       <Main />
-      <NotificationsBox />
     </div>
   )
 }

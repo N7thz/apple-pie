@@ -18,9 +18,7 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        console.log(item)
-
-        if (item) throw new Error("item already exist.")
+        if (item) throw new Error("Item already exist.")
 
         await prisma.item.create({
             data: {
@@ -29,14 +27,18 @@ export async function POST(request: NextRequest) {
         })
     }
 
-    return new NextResponse("", {
+    return new NextResponse("created", {
         status: 201
     })
 }
 
 export async function GET() {
 
-    const response = await prisma.item.findMany()
+    const response = await prisma.item.findMany({
+        orderBy: {
+            isChecked: "asc"
+        }
+    })
 
     return NextResponse.json(response)
 }
@@ -53,7 +55,7 @@ export async function PUT(request: NextRequest) {
         },
         data: {
             isChecked: !isChecked
-        } 
+        }
     })
 
     return new NextResponse("", {

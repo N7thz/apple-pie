@@ -2,13 +2,15 @@
 
 import { Item } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
-import { Card, CardHeader, CardTitle } from "./ui/card"
-import { Checkbox } from "./ui/checkbox"
+import { ItemComponent } from "./item-component"
+import { LoadingItems } from "./loading-items"
+import { SuspendedMenu } from "./suspended-menu"
 
 export const ItemsList = () => {
 
     const { data: items, isLoading } = useQuery({
         queryKey: ["get-items"],
+        refetchInterval: 1000,
         queryFn: async () => {
 
             const response = await fetch("/api/items", {
@@ -23,55 +25,22 @@ export const ItemsList = () => {
         }
     })
 
+    if (isLoading) return <LoadingItems />
+
     if (!items || items.length === 0) return (
         <p className="text-muted-foreground">
             sem items para comprar
         </p>
     )
 
-    async function changeIsChecked(item: Item) {
-
-        const response = await fetch("/api/items", {
-            method: "PUT",
-            body: JSON.stringify(item)
-        })
-
-        console.log(response)
-    }
-
     return (
 
         <div className="grid grid-cols-3 gap-3 p-3">
-            {
-                items.map(item => {
-
-                    const { id, content, created_at, isChecked } = item
-
-                    return (
-
-                        <Card
-                            key={id}
-                            className="border-primary"
-                        >
-                            <CardHeader>
-                                <CardTitle
-                                    className="flex justify-between items-center gap-3"
-                                >
-                                    <span
-                                        className="w-4/5 overflow-hidden text-ellipsis text-nowrap capitalize"
-                                    >
-                                        {content}
-                                    </span>
-                                    <Checkbox
-                                        className="scale-125"
-                                        onClick={() => changeIsChecked(item)}
-                                    />
-                                </CardTitle>
-                            </CardHeader>
-                        </Card>
-                    )
-                })
-            }
+            {items.map(item =>
+                <SuspendedMenu key={item.id}>
+                    <ItemComponent item={item} />
+                </SuspendedMenu>
+            )}
         </div>
     )
 }
