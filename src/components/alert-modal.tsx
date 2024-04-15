@@ -1,5 +1,3 @@
-"use client"
-
 import { Dialog, DialogTrigger, DialogContent, DialogFooter } from './ui/dialog'
 import { Button } from './ui/button'
 import { ReactNode } from 'react'
@@ -7,9 +5,12 @@ import { ReactNode } from 'react'
 export interface AlertModalProps {
     children: ReactNode
     message: string
+    onClickFunction: () => void
 }
 
-export const AlertModal = ({ children, message }: AlertModalProps) => {
+export const AlertModal = ({
+    children, message, onClickFunction
+}: AlertModalProps) => {
 
     return (
 
@@ -24,10 +25,7 @@ export const AlertModal = ({ children, message }: AlertModalProps) => {
                     {message}
                 </span>
                 <DialogFooter>
-                    <Button>
-                        Cancelar
-                    </Button>
-                    <Button>
+                    <Button onClick={onClickFunction}>
                         Confirmar
                     </Button>
                 </DialogFooter>

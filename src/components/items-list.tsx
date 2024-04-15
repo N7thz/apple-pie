@@ -35,9 +35,14 @@ export const ItemsList = () => {
 
     return (
 
-        <div className="grid grid-cols-3 gap-3 p-3">
+        <div
+            className="grid grid-cols-3 gap-3 p-3 max-sm:grid-cols-1 max-md:grid-cols-2"
+        >
             {items.map(item =>
-                <SuspendedMenu key={item.id}>
+                <SuspendedMenu
+                    key={item.id}
+                    item={item}
+                >
                     <ItemComponent item={item} />
                 </SuspendedMenu>
             )}

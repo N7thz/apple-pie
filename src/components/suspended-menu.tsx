@@ -1,53 +1,60 @@
 import { Item } from "@prisma/client"
-import { Button } from "./ui/button"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "./ui/tooltip"
 import { SuspendedMenuProps } from "@/@types"
 import { Pencil, Trash } from "lucide-react"
+import { Button } from "./ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 import { AlertModal } from "./alert-modal"
+import { FormUpdateItem } from "./form-update-item"
 
 export const SuspendedMenu = ({ children, item }: SuspendedMenuProps) => {
 
-    async function upDateItem(item: Item) {
-
-    }
-
     async function deleteItem(item: Item) {
 
+        const { id } = item
+
+        const { status } = await fetch(`/api/items/${id}`, {
+            method: "DELETE",
+        })
+
+        if (status === 500) {
+
+            window.location.reload()
+        }
     }
 
     return (
-
-        <TooltipProvider>
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <div>
-                        {children}
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent
-                    className="w-full border-primary flex gap-2 p-2"
-                >
-                    <Button
-                        onClick={() => upDateItem(item)}
-                    >
-                        <Pencil />
-                    </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <div>
+                    {children}
+                </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 border-primary">
+                <DropdownMenuLabel className="text-xl">
+                    Opções
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="w-full flex justify-around p-1">
+                    <FormUpdateItem item={item} />
                     <AlertModal
-                        message="Tem certeza que deseja excuir o item ?"
+                        onClickFunction={() => deleteItem(item)}
+                        message="Tem certeza que deseja excuir o item?"
                     >
                         <Button
-                            onClick={() => deleteItem(item)}
+                            size="lg"
                         >
                             <Trash />
                         </Button>
                     </AlertModal>
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
+                </div>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
+

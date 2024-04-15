@@ -14,7 +14,7 @@ import {
 } from "framer-motion"
 
 import { z } from "zod"
-import { createItemsSchema } from "@/schemas"
+import { createItemsSchema, updateItemsSchema } from "@/schemas"
 import { LucideIcon } from "lucide-react"
 import { Item } from "@prisma/client"
 
@@ -56,3 +56,4 @@ export interface SuspendedMenuProps {
 }
 
 export type CreateItemsForm = z.infer<typeof createItemsSchema>
+export type UpdateItemsForm = z.infer<typeof updateItemsSchema>

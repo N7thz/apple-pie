@@ -21,7 +21,7 @@ export const ItemComponent:FC<ItemComponentProps> = ({ item }) => {
     return (
 
         <Card
-            className="border-primary"
+            className="border-primary cursor-pointer"
         >
             <CardHeader>
                 <CardTitle
