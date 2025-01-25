@@ -1,16 +1,25 @@
 import { z } from "zod"
 
-export const createItemsSchema = z.object({
-    items: z.array(z.object({
-        title: z.string().nonempty({
-            message: "todos os campos devem estar preenchidos"
-        }).toLowerCase()
-    }))
+export const createTaskSchema = z.object({
+	tasks: z.array(
+		z.object({
+			title: z
+				.string({ required_error: "o campo deve ser preenchido." })
+				.toLowerCase(),
+			content: z.string({
+				required_error: "o campo deve ser preenchido."
+			}),
+			dayTask: z.date({ required_error: "o campo deve ser preenchido." }),
+			priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
+		})
+	)
 })
 
-export const updateItemsSchema = z.object({
-    title: z.string().nonempty({
-        message: "o campo deve ser preenchido."
-    }).toLowerCase()
+export const updateTaskSchema = z.object({
+	title: z
+		.string()
+		.nonempty({
+			message: "o campo deve ser preenchido.",
+		})
+		.toLowerCase(),
 })
-

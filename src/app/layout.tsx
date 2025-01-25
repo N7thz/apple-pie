@@ -1,10 +1,9 @@
-import { ThemeProvider } from "@/context/theme-context"
-import { NotificationProvider } from "@/context/notification-context"
-import "./globals.css"
+import { ThemeProvider } from "@/providers/theme-context"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Oswald } from "next/font/google"
+import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const oswald = Oswald({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Apple pie",
@@ -28,21 +27,19 @@ export const metadata: Metadata = {
   ],
 }
 
-export default function RootLayout({
-  children,
-}: {
+type LayoutProps = {
   children: React.ReactNode
-}) {
+}
+
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="pt-br">
-      <body className={inter.className}>
+      <body className={oswald.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
         >
-          <NotificationProvider>
-            {children}
-          </NotificationProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

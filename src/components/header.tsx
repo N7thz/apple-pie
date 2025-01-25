@@ -1,13 +1,9 @@
 import { ModeToggle } from "@/components/mode-toggle"
 
 export const Header = () => {
-
-    return (
-
-        <header
-            className="w-full flex items-center justify-end p-3 border-b-2 border-primary fixed top-0 left-0 right-0 bottom-auto"
-        >
-            <ModeToggle />
-        </header>
-    )
+	return (
+		<header className="fixed bottom-auto left-0 right-0 top-0 z-50 flex w-full items-center justify-end border-b-2 border-primary p-3">
+			<ModeToggle />
+		</header>
+	)
 }

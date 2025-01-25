@@ -3,62 +3,58 @@ import { Item } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
+	const body: string[] = await request.json()
 
-    const body: string[] = await request.json()
+	console.log(body)
 
-    console.log(body)
+	body.map((item) => createItem(item))
 
-    body.map(item => createItem(item))
+	async function createItem(content: string) {
+		const item = await prisma.item.findUnique({
+			where: {
+				content,
+			},
+		})
 
-    async function createItem(content: string) {
+		if (item) throw new Error("Item already exist.")
 
-        const item = await prisma.item.findUnique({
-            where: {
-                content
-            }
-        })
+		await prisma.item.create({
+			data: {
+				content,
+			},
+		})
+	}
 
-        if (item) throw new Error("Item already exist.")
-
-        await prisma.item.create({
-            data: {
-                content
-            }
-        })
-    }
-
-    return new NextResponse("created", {
-        status: 201
-    })
+	return new NextResponse("created", {
+		status: 201,
+	})
 }
 
 export async function GET() {
+	const response = await prisma.item.findMany({
+		orderBy: {
+			isChecked: "asc",
+		},
+	})
 
-    const response = await prisma.item.findMany({
-        orderBy: {
-            isChecked: "asc"
-        }
-    })
-
-    return NextResponse.json(response)
+	return NextResponse.json(response)
 }
 
 export async function PUT(request: NextRequest) {
+	const body: Item = await request.json()
 
-    const body: Item = await request.json()
+	const { id, isChecked } = body
 
-    const { id, isChecked } = body
+	await prisma.item.update({
+		where: {
+			id,
+		},
+		data: {
+			isChecked: !isChecked,
+		},
+	})
 
-    await prisma.item.update({
-        where: {
-            id
-        },
-        data: {
-            isChecked: !isChecked
-        }
-    })
-
-    return new NextResponse("", {
-        status: 200
-    })
+	return new NextResponse("", {
+		status: 200,
+	})
 }
