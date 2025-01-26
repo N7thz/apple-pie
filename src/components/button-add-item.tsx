@@ -1,7 +1,8 @@
-import { DatePicker } from "./date-picker"
-import { FormCreateTask as DialogContent } from "./forms/form-create-task"
-import { Button } from "./ui/button"
-import { Dialog, DialogTrigger } from "./ui/dialog"
+import {
+	FormCreateTask as DialogContent
+} from "@/components/forms/form-create-task"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 
 export const ButtonAddItem = () => {
 	return (

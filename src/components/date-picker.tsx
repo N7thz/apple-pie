@@ -1,6 +1,6 @@
 "use client"
 
-import { ComponentProps, Dispatch, SetStateAction } from "react"
+import { ComponentProps } from "react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { CalendarIcon } from "lucide-react"
@@ -13,7 +13,7 @@ import {
 
 export interface DatePickerProps extends ComponentProps<"div"> {
     date: Date | undefined
-    setDate: Dispatch<SetStateAction<Date | undefined>>
+    setDate: (date: Date | undefined) => void
 }
 
 export const DatePicker = ({

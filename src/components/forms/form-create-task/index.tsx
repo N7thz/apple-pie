@@ -9,85 +9,74 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { DatePicker } from "@/components/date-picker"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { v4 as randomUUID } from "uuid"
 import { CreateTaskForm } from "@/@types"
 import { createTaskSchema } from "@/schemas"
-import { FormCreateTaskItem } from "./form-create-task-item"
+import { TaskItem } from "./task-item"
+import { Priority } from "@prisma/client"
+import { dateInString } from "@/utils/date-in-string"
 
 export const FormCreateTask = () => {
 
-	const [date, setDate] = useState<Date>()
+	const [dateTask, setDateTask] = useState<Date>()
+	const [priority, setPriority] = useState<Priority>("LOW")
 
-	const {
-		register,
-		reset,
-		handleSubmit,
-		control,
-		formState: { errors },
-	} = useForm<CreateTaskForm>({
+	const methods = useForm<CreateTaskForm>({
 		resolver: zodResolver(createTaskSchema),
+		defaultValues: {
+			dateTask,
+			priority,
+		}
 	})
 
-	const { fields: tasks, append, remove } = useFieldArray({
-		control,
-		name: "tasks",
-	})
+	const { handleSubmit, formState: { errors } } = methods
 
-	async function createTask(data: CreateTaskForm) {
-		console.log(data)
+	console.log(dateTask)
+	console.log(errors)
+
+	async function createTask({ title, content }: CreateTaskForm) {
+
+		const date = dateInString(dateTask as Date)
+
+		console.log({ title, content, date, priority })
 	}
 
-	tasks.length === 0 && tasks.push({
-		id: randomUUID(),
-		title: "",
-		content: "",
-		dayTask: date ?? new Date(),
-		priority: "LOW",
-	})
-
 	return (
-		<DialogContent className="size-3/4 p-0 overflow-hidden">
-			<form
-				className="size-full flex flex-col px-6 py-3 justify-between"
-				onSubmit={handleSubmit(createTask)}
-			>
-				<div className="flex flex-col gap-6">
-					<DialogHeader>
-						<DialogTitle className="text-2xl">
-							Adicionar tarefa
-						</DialogTitle>
-						<DialogDescription className="italic">
-							adione as tarefas do dia
-						</DialogDescription>
-					</DialogHeader>
-					<ScrollArea className="max-h-[400px]">
-						{
-							tasks.map(({ id }) => (
-								<FormCreateTaskItem
-									key={id}
-									date={date}
-									setDate={setDate}
-								/>
-							))
-						}
-					</ScrollArea>
-				</div>
-				<DialogFooter>
-					<Button
-						type="submit"
-						className="capitalize w-1/2"
-					>
-						salvar item
-					</Button>
-				</DialogFooter>
-			</form>
+		<DialogContent className="size-4/5 p-0 overflow-hidden">
+			<FormProvider {...methods}>
+				<form
+					className="size-full flex flex-col px-6 py-3 justify-between"
+					onSubmit={handleSubmit(createTask)}
+				>
+					<div className="flex flex-col gap-6">
+						<DialogHeader>
+							<DialogTitle className="text-2xl">
+								Adicionar tarefa
+							</DialogTitle>
+							<DialogDescription className="italic">
+								adione as tarefas do dia
+							</DialogDescription>
+						</DialogHeader>
+						<div className="size-full space-y-6">
+							<TaskItem
+								date={dateTask}
+								setDate={setDateTask}
+								priority={priority}
+								setPriority={setPriority}
+							/>
+						</div>
+					</div>
+					<DialogFooter className="mt-12">
+						<Button
+							type="submit"
+							className="capitalize w-2/5"
+						>
+							salvar item
+						</Button>
+					</DialogFooter>
+				</form>
+			</FormProvider>
 		</DialogContent>
 	)
 }

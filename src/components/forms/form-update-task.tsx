@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Pencil } from "lucide-react"
-import { Button } from "../ui/button"
-import { Dialog, DialogTrigger, DialogContent, DialogFooter } from "../ui/dialog"
+import { Button } from ".@/components/ui/button"
+import { Dialog, DialogTrigger, DialogContent, DialogFooter } from ".@/components/ui/dialog"
 import {
 	CreateTaskForm,
 	Error,
@@ -11,8 +11,8 @@ import {
 import { updateTaskSchema } from "@/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
+import { Label } from ".@/components/ui/label"
+import { Input } from ".@/components/ui/input"
 import { twMerge } from "tailwind-merge"
 
 export const FormUpdateTask = ({ item }: ItemComponentProps) => {

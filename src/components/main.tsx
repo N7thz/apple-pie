@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ButtonAddItem } from "./button-add-item"
 
 export const Main = () => {
@@ -12,7 +12,7 @@ export const Main = () => {
                     <ButtonAddItem />
                 </CardHeader>
                 <CardContent className="flex justify-center">
-                    
+
                 </CardContent>
             </Card>
         </main>
