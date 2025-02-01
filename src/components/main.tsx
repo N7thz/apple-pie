@@ -11,8 +11,8 @@ export const Main = () => {
                     </CardTitle>
                     <ButtonAddItem />
                 </CardHeader>
-                <CardContent className="flex justify-center">
-
+                <CardContent className="flex justify-center text-muted-foreground italic">
+                    Sem itens na lista
                 </CardContent>
             </Card>
         </main>

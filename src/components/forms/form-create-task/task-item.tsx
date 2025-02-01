@@ -5,11 +5,10 @@ import { DatePicker } from "@/components/date-picker"
 import { Dispatch, SetStateAction } from "react"
 import { SelectPriority } from "./select-priority"
 import { Priority } from "@prisma/client"
-import { Button } from "@/components/ui/button"
-import { Trash2 } from "lucide-react"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { useFormContext } from "react-hook-form"
 import { CreateTaskForm } from "@/@types"
+import { SpanMessage } from "@/components/span-message"
 
 interface TaskItemProps {
     date: Date | undefined
@@ -24,8 +23,6 @@ export const TaskItem = ({
 }: TaskItemProps) => {
 
     const { register, formState: { errors } } = useFormContext<CreateTaskForm>()
-
-    console.log(date)
 
     return (
         <Card>
@@ -42,6 +39,10 @@ export const TaskItem = ({
                         className="w-[99%]"
                         {...register("title")}
                     />
+                    {
+                        errors.title &&
+                        <SpanMessage message={errors.title.message} />
+                    }
                 </Label>
                 <Label
                     htmlFor="content"
@@ -55,6 +56,10 @@ export const TaskItem = ({
                         className="w-[99%]"
                         {...register("content")}
                     />
+                    {
+                        errors.content &&
+                        <SpanMessage message={errors.content.message} />
+                    }
                 </Label>
                 <div className="flex items-center gap-8">
                     <Label
@@ -70,6 +75,10 @@ export const TaskItem = ({
                             date={date}
                             setDate={setDate}
                         />
+                        {
+                            errors.dateTask &&
+                            <SpanMessage message={errors.dateTask.message} />
+                        }
                     </Label>
                     <Label
                         htmlFor="priority"
@@ -82,19 +91,13 @@ export const TaskItem = ({
                             value={priority}
                             onValueChange={setPriority}
                         />
+                        {
+                            errors.priority &&
+                            <SpanMessage message={errors.priority.message} />
+                        }
                     </Label>
                 </div>
             </CardContent>
-            <CardFooter>
-                <Button
-                    type="button"
-                    variant="destructive"
-                    className="w-full"
-                >
-                    Remover tarefa
-                    <Trash2 />
-                </Button>
-            </CardFooter>
         </Card>
     )
 }

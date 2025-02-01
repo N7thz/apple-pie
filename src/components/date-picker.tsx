@@ -21,7 +21,9 @@ export const DatePicker = ({
 }: DatePickerProps) => {
 
     const dateString = (
-        date ? format(date, "PPPP", { locale: ptBR }) : <span>Pick a date</span>
+        date
+            ? format(date, "PPPP", { locale: ptBR })
+            : <span>Selecione uma data</span>
     )
 
     return (
